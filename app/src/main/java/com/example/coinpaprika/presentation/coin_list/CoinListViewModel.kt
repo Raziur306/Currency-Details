@@ -1,5 +1,6 @@
 package com.example.coinpaprika.presentation.coin_list
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,18 +17,16 @@ class CoinListViewModel @Inject constructor(
     private val getCoinsUseCase: GetCoinsUseCase
 ) :
     ViewModel() {
+    private val _state = mutableStateOf<CoinListState>(CoinListState())
+    val state: State<CoinListState> = _state
     init {
         getCoin()
     }
-
-    private val _state = mutableStateOf<CoinListState>(CoinListState())
-    val state: State<CoinListState> = _state
-
     private fun getCoin() {
         getCoinsUseCase().onEach { result ->
             when (result) {
                 is Resource.Loading -> {
-                    _state.value = CoinListState(isLoading = true)
+                     _state.value = CoinListState(isLoading = true)
                 }
                 is Resource.Success -> {
                     _state.value = CoinListState(coinList = result.data ?: emptyList())
@@ -37,6 +36,7 @@ class CoinListViewModel @Inject constructor(
                         errorMessage = result.message ?: "An unexpected error occurred."
                     )
                 }
+
             }
         }.launchIn(viewModelScope)
     }

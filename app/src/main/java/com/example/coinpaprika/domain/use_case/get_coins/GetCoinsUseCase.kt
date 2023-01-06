@@ -15,7 +15,7 @@ class GetCoinsUseCase @Inject constructor(private val repository: CoinRepository
     operator fun invoke(): Flow<Resource<List<Coin>>> = flow {
         try {
             emit(Resource.Loading())
-            val coins = repository.getCoins().map { it.toCoin() }
+            val coins = repository.getCoins()?.map { it.toCoin() }
             emit(Resource.Success(coins))
         } catch (e: IOException) {
             emit(Resource.Error("Check your internet connection"))

@@ -6,38 +6,56 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.coinpaprika.CoinpaprikaApplication
+import com.example.coinpaprika.presentation.coin_detail.CoinDetailViewModel
+import com.example.coinpaprika.presentation.coin_detail.components.CoinDetailScreen
+import com.example.coinpaprika.presentation.coin_list.CoinListScreen
+import com.example.coinpaprika.presentation.coin_list.CoinListViewModel
 import com.example.coinpaprika.presentation.theme.CoinpaprikaTheme
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var coinListViewModel: CoinListViewModel
+
+    @Inject
+    lateinit var coinDetailViewModel: CoinDetailViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //inject
+        (applicationContext as CoinpaprikaApplication).applicationComponent.inject(this)
+
         setContent {
             CoinpaprikaTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.CoinListScreen.route
+                    ) {
+                        composable(
+                            route = Screen.CoinListScreen.route
+                        ) {
+                            CoinListScreen(navController, coinListViewModel)
+                        }
+                        composable(
+                            route = Screen.CoinDetailScreen.route+"/{coinId}"
+                        ) {
+                           CoinDetailScreen(viewModel = coinDetailViewModel)
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CoinpaprikaTheme {
-        Greeting("Android")
-    }
-}

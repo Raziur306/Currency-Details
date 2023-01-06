@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+class NetworkModule {
     @Provides
     @Singleton
     fun providePaprikaApi(): Api {
