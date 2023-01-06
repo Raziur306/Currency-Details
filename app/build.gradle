@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -64,4 +65,8 @@ dependencies {
     //retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //dagger2
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }
