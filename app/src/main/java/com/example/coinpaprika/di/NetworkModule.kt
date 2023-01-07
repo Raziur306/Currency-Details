@@ -6,12 +6,15 @@ import com.example.coinpaprika.data.repository.CoinRepositoryImp
 import com.example.coinpaprika.domain.repository.CoinRepository
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class NetworkModule {
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
     @Provides
     @Singleton
     fun providePaprikaApi(): Api {

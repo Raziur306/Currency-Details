@@ -1,32 +1,31 @@
 package com.example.coinpaprika.presentation.coin_detail
 
+
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.coinpaprika.common.Constants.PARAM_COIN_ID
 import com.example.coinpaprika.common.Resource
-import com.example.coinpaprika.domain.model.CoinDetail
 import com.example.coinpaprika.domain.use_case.get_coin.GetCoinUseCase
-import com.example.coinpaprika.presentation.coin_list.CoinListState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
+@HiltViewModel
 class CoinDetailViewModel @Inject constructor(
     private val coinUseCase: GetCoinUseCase,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
-    ) :
-    ViewModel() {
-    private val savedStateHandle: SavedStateHandle = SavedStateHandle()
     private val _state = mutableStateOf<CoinDetailState>(CoinDetailState())
     val state: State<CoinDetailState> = _state
 
     init {
         savedStateHandle.get<String>(PARAM_COIN_ID)?.let { coinId ->
-            getCoin(coinId)
+            getCoin("btc-bitcoin")
         }
     }
 

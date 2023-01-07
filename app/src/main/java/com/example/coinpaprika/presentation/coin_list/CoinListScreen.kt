@@ -1,6 +1,5 @@
 package com.example.coinpaprika.presentation.coin_list
 
-
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,28 +11,28 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.node.modifierElementOf
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.coinpaprika.presentation.Screen
 import com.example.coinpaprika.presentation.coin_list.components.CoinListItem
-import javax.inject.Inject
 
 @Composable
-
 fun CoinListScreen(
     navController: NavController,
-    coinListViewModel: CoinListViewModel
+    coinListViewModel: CoinListViewModel = hiltViewModel()
 ) {
-
     val state = coinListViewModel.state.value
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             items(state.coinList) { coin ->
-                CoinListItem(coin = coin, onItemClick = {
-                    navController.navigate(Screen.CoinDetailScreen.route + "/${coin.id}")
-                })
+                CoinListItem(coin = coin,
+                    onItemClick = {
+                        navController.navigate(Screen.CoinDetailScreen.route + "/${coin.id}")
+                    })
             }
         }
         if (state.errorMessage.isNotBlank()) {
@@ -49,4 +48,5 @@ fun CoinListScreen(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
         }
     }
+
 }
