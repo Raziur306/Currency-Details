@@ -8,4 +8,6 @@
 ## Used
 1. Hilt
 2. Clean Architecture
+3. Retrofit
+4. Coroutine
 
